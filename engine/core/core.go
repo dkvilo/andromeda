@@ -6,6 +6,8 @@ import (
 	"github.com/dkvilo/andromeda/engine/object"
 	"github.com/dkvilo/andromeda/engine/shader"
 	"github.com/dkvilo/andromeda/engine/texture"
+	"github.com/dkvilo/andromeda/engine/vertexarray"
+	"github.com/dkvilo/andromeda/engine/vertexbuffer"
 	"github.com/go-gl/gl/v4.1-core/gl"
 	"github.com/go-gl/glfw/v3.3/glfw"
 	"github.com/go-gl/mathgl/mgl32"
@@ -33,7 +35,7 @@ func (andromeda *Andromeda) init() *Andromeda{
 		log.Fatalf("GLFW Init: %s", andromeda.err)
 	}
 
-	glfw.WindowHint(glfw.Resizable, glfw.False)
+	glfw.WindowHint(glfw.Resizable, glfw.True)
 	glfw.WindowHint(glfw.ContextVersionMajor, 4)
 	glfw.WindowHint(glfw.ContextVersionMinor, 1)
 	glfw.WindowHint(glfw.OpenGLProfile, glfw.OpenGLCoreProfile)
@@ -73,17 +75,11 @@ func (andromeda *Andromeda) Run() *Andromeda {
 	return andromeda
 }
 
-// // Player Object
-// func Player() *entity.Entity {
-// 	player := &entity.Entity{}
-// 	player.AddComponent("Transform", components.NewTransform(player))
-// 	player.AddComponent("Shape", components.NewShape(player))
-// 	return player
-// }
-
 func sizeOf(t interface{}) uintptr {
 	return reflect.TypeOf(t).Size()
 }
+
+var xPos, yPos float64
 
 func (andromeda *Andromeda) loadScene() {
 
@@ -94,12 +90,12 @@ func (andromeda *Andromeda) loadScene() {
 
 	objectVertices := object.Load(objectSrc)
 
-	vertexShaderSrc, err := gas.Abs("github.com/dkvilo/andromeda/resources/assets/shaders/shader.vsh")
+	vertexShaderSrc, err := gas.Abs("github.com/dkvilo/andromeda/engine/assets/shaders/shader.vsh")
 	if err != nil {
 		log.Fatalln("vertex shader path found")
 	}
 
-	fragmentShaderSrc, err := gas.Abs("github.com/dkvilo/andromeda/resources/assets/shaders/shader.fsh")
+	fragmentShaderSrc, err := gas.Abs("github.com/dkvilo/andromeda/engine/assets/shaders/shader.fsh")
 	if err != nil {
 		log.Fatalln("fragment shader path found")
 	}
@@ -122,7 +118,7 @@ func (andromeda *Andromeda) loadScene() {
 
 	gl.UseProgram(program)
 
-	projection := mgl32.Perspective(mgl32.DegToRad(45.0), andromeda.Width / andromeda.Height, 0.1, 10.0)
+	projection := mgl32.Perspective(mgl32.DegToRad(45.0), andromeda.Width / andromeda.Height, 0.1, 100.0)
 	projectionUniform := gl.GetUniformLocation(program, gl.Str("projection\x00"))
 	gl.UniformMatrix4fv(projectionUniform, 1, false, &projection[0])
 
@@ -135,15 +131,11 @@ func (andromeda *Andromeda) loadScene() {
 
 	gl.BindFragDataLocation(program, 0, gl.Str("outputColor\x00"))
 
-	// Configure the vertex data
-	var vao uint32
-	gl.GenVertexArrays(1, &vao)
-	gl.BindVertexArray(vao)
+	cubeVertexArray := vertexarray.VertexArray{}
+	cubeVertexArray.New()
 
-	var vbo uint32
-	gl.GenBuffers(1, &vbo)
-	gl.BindBuffer(gl.ARRAY_BUFFER, vbo)
-	gl.BufferData(gl.ARRAY_BUFFER, len(objectVertices) * 4, gl.Ptr(objectVertices), gl.STATIC_DRAW)
+	cubeVertexBuffer := vertexbuffer.VertexBuffer{}
+	cubeVertexBuffer.New(objectVertices, len(objectVertices) * 4)
 
 	vertAttrib := uint32(gl.GetAttribLocation(program, gl.Str("vert\x00")))
 	gl.EnableVertexAttribArray(vertAttrib)
@@ -166,8 +158,12 @@ func (andromeda *Andromeda) loadScene() {
 
 	angle := 0.0
 	previousTime := glfw.GetTime()
-
+	
 	for !andromeda.window.ShouldClose() {
+
+		andromeda.window.SetInputMode(glfw.CursorMode, glfw.CursorHidden);
+
+		xPos, yPos = andromeda.window.GetCursorPos()
 
 		andromeda.masterRenderer()
 
@@ -176,23 +172,27 @@ func (andromeda *Andromeda) loadScene() {
 		elapsed := time - previousTime
 		previousTime = time
 
+		// Configure global settings
+		gl.Enable(gl.DEPTH_TEST)
+		gl.DepthFunc(gl.LESS)
+		gl.ClearColor(float32(math.Cos(time)), float32(math.Sin(time)), float32(math.Cos(time)), 0.1)
+
 		texVertTime := float32(gl.GetUniformLocation(program, gl.Str("time\x00")))
 		gl.Uniform1f(int32(texVertTime), float32(time))
 
 		camera := mgl32.LookAtV(mgl32.Vec3{3, 3, 3}, mgl32.Vec3{0, 0, 0}, mgl32.Vec3{0, 1, 0})
 
-		cameraUniform := gl.GetUniformLocation(program, gl.Str("camera\x00"))
-		gl.UniformMatrix4fv(cameraUniform, 1, false, &camera[0])
-
 		angle += elapsed * 0.5
 
-		model = mgl32.HomogRotate3D(float32(angle), mgl32.Vec3{0, -1, 0})
+		if andromeda.window.GetKey(glfw.KeyR) == 1 {
+			model = mgl32.HomogRotate3D(float32(xPos / 100 ), mgl32.Vec3{0, -1, 0})
+			camera = mgl32.LookAtV(mgl32.Vec3{float32(xPos / 100), float32(yPos / 100), 3}, mgl32.Vec3{0, 0, 0}, mgl32.Vec3{0, 1, 0})
+		} else {
+			model = mgl32.HomogRotate3D(float32(angle), mgl32.Vec3{0, -1, 0})
+		}
 
-		// Configure global settings
-		gl.Enable(gl.DEPTH_TEST)
-		gl.DepthFunc(gl.LESS)
-
-		gl.ClearColor(float32(math.Cos(time)), float32(math.Sin(time)), float32(math.Cos(time)), 0.1)
+		cameraUniform := gl.GetUniformLocation(program, gl.Str("camera\x00"))
+		gl.UniformMatrix4fv(cameraUniform, 1, false, &camera[0])
 
 		if andromeda.window.GetKey(glfw.KeyL) == 1 {
 			gl.Enable(gl.BLEND)
@@ -205,7 +205,7 @@ func (andromeda *Andromeda) loadScene() {
 		gl.UseProgram(program)
 		gl.UniformMatrix4fv(modelUniform, 1, true, &model[0])
 
-		gl.BindVertexArray(vao)
+		cubeVertexArray.Bind()
 
 		gl.ActiveTexture(gl.TEXTURE0)
 
@@ -215,6 +215,7 @@ func (andromeda *Andromeda) loadScene() {
 		if andromeda.window.GetKey(glfw.KeyQ) == 1 {
 			break
 		}
+
 		andromeda.window.SwapBuffers()
 		glfw.PollEvents()
 	}
