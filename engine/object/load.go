@@ -20,7 +20,7 @@ func Load(path string) []float32 {
 	
 	file, err := os.Open(path)
 	if err != nil {
-		fmt.Errorf("Object %q not found on disk: %v", path, err)
+		panic(fmt.Errorf("Object %q not found on disk: %v", path, err))
 	}
 
 	defer file.Close()

@@ -4,14 +4,15 @@ import (
 	"fmt"
 
 	"github.com/dkvilo/andromeda/engine/entity"
-	"github.com/dkvilo/andromeda/engine/utils/vector"
+	"github.com/go-gl/glfw/v3.3/glfw"
+	"github.com/go-gl/mathgl/mgl32"
 )
 
-//   Structure
+// Transform Structure
 type Transform struct {
+	Label string
 	Container *entity.Entity
-	Position vector.Vector3d
-	Rotation vector.Vector3d
+	Position, Rotation mgl32.Vec3
 }
 
 // NewTransform constructor
@@ -21,9 +22,13 @@ func NewTransform(container *entity.Entity) *Transform {
 	}
 }
 
+// OnRender Override
+func (t *Transform) OnRender() {}
+
+// OnStart Override
+func (t *Transform) OnStart() {}
+
 // OnUpdate method for Transform ...
-func (t *Transform) OnUpdate() {
-	t.Rotation.X += 2.4
-	t.Rotation.Y += 2.4
-	fmt.Println("Transform On Update on [", t.Container, "]")
+func (t *Transform) OnUpdate(window *glfw.Window, time, prevTime, elapsed float64) {
+	fmt.Println("Transform", t.Label, ":\n  - Position:", t.Position, "\n  - Rotation:", t.Rotation)
 }

@@ -10,7 +10,9 @@ import (
 )
 
 // Create Texture
-func Create(file string) (uint32, error) {
+func Create(file string, slot uint32) (uint32, error) {
+
+	fmt.Println("[Texture] Using Texture Slot", gl.TEXTURE0 + slot)
 
 	imgFile, err := os.Open(file)
 	if err != nil {
@@ -23,7 +25,7 @@ func Create(file string) (uint32, error) {
 	}
 
 	rgba := image.NewRGBA(img.Bounds())
-	if rgba.Stride != rgba.Rect.Size().X*4 {
+	if rgba.Stride != rgba.Rect.Size().X * 4 {
 		return 0, fmt.Errorf("unsupported stride")
 	}
 	
@@ -31,7 +33,7 @@ func Create(file string) (uint32, error) {
 
 	var texture uint32
 	gl.GenTextures(1, &texture)
-	gl.ActiveTexture(gl.TEXTURE0)
+	gl.ActiveTexture(gl.TEXTURE0 + slot)
 	gl.BindTexture(gl.TEXTURE_2D, texture)
 	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
 	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)

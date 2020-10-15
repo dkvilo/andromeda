@@ -5,5 +5,6 @@ import (
 )
 
 func main()  {
-	sandbox.Example_1.Andromeda.Run()
+	sandbox.Scene3d.Andromeda.Run()
+	// sandbox.Scene2d.Andromeda.Run()
 }
