@@ -14,7 +14,7 @@ void main() {
   float strength = 1 / 100.0;
 
 	if (camera[0].y != 0) {
-		speed = (time * camera[0].y / camera[0].x) * 0.01;
+		speed = (time * camera[0].y / camera[0].x) * 0.05; // 0.02
 	}
 
 	vec2 coord = fragTexCoord * 1.0;
