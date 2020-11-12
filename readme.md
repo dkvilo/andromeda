@@ -12,6 +12,11 @@ Core Renderer of andromeda Game Engine written in go, using Modern OpenGL API
   $ make build && make run
 ```
 
+
+# Preview 3d scene example
+<img src="https://github.com/dkvilo/andromeda/blob/develop/screen-space-reflections-low-res.gif" />
+
+
 ## Framework usage
 ```go
 
@@ -121,5 +126,3 @@ var (
 
 
 ```
-
-
