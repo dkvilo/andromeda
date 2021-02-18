@@ -8,11 +8,11 @@ import (
 	"runtime"
 
 	"github.com/andrebq/gas"
-	"github.com/dkvilo/andromeda/engine/components"
-	. "github.com/dkvilo/andromeda/engine/core"
-	"github.com/dkvilo/andromeda/engine/entity"
-	"github.com/dkvilo/andromeda/engine/object"
-	"github.com/dkvilo/andromeda/engine/shader"
+	"github.com/dkvilo/andromeda/framework/components"
+	core "github.com/dkvilo/andromeda/framework/core"
+	"github.com/dkvilo/andromeda/framework/entity"
+	"github.com/dkvilo/andromeda/framework/object"
+	"github.com/dkvilo/andromeda/framework/shader"
 	"github.com/go-gl/mathgl/mgl32"
 )
 
@@ -20,25 +20,24 @@ func init() {
 	runtime.LockOSThread();
 }
 
-
 var (
 	// Scene2d Example App
 	Scene2d Example = Example{
-		Andromeda {
+		core.Andromeda {
 			Width:  1080,
 			Height: 720,
 			Title:  "Andromeda 2d Sandbox",
 			Frameless: true,
 			
 			// Issue OnLoad 
-			SetupOnLoadContext: func(andromeda *Andromeda) {
+			SetupOnLoadContext: func(andromeda *core.Andromeda) {
 
-				vertexShaderSrc, err := gas.Abs("github.com/dkvilo/andromeda/engine/assets/shaders/noise/uber/shader.vert")
+				vertexShaderSrc, err := gas.Abs("github.com/dkvilo/andromeda/framework/assets/shaders/stream/shader.vert")
 				if err != nil {
 					log.Fatalln("vertex shader path found")
 				}
 
-				fragmentShaderSrc, err := gas.Abs("github.com/dkvilo/andromeda/engine/assets/shaders/noise/uber/shader.frag")
+				fragmentShaderSrc, err := gas.Abs("github.com/dkvilo/andromeda/framework/assets/shaders/stream/shader.frag")
 				if err != nil {
 					log.Fatalln("fragment shader path found")
 				}
@@ -75,20 +74,19 @@ var (
 				cubeShape.Program = &program;
 
 				Cube.AddComponent("Shape", cubeShape)
-				Cube.OnStart()
+				Cube.Ready()
 				
 				cubeShape.Program.SetProjectionMatrix(
 					mgl32.Perspective(mgl32.DegToRad(52.0),
 					andromeda.Width / andromeda.Height, 0.1, 100.0),
 				)
 				
-				cubeShape.BindTexture();
 				andromeda.EntityManager.RegisterEntity("Cube", Cube)
 			},
 
 			// Issue Entity Update
-			SetupOnUpdateContext: func(andromeda *Andromeda) {				
-				andromeda.EntityManager.GetEntities()["Cube"].Components["Shape"].OnUpdate(
+			SetupOnUpdateContext: func(andromeda *core.Andromeda) {
+				andromeda.EntityManager.GetEntities()["Cube"].Components["Shape"].Update(
 					andromeda.GetWindow(),
 					andromeda.GetMeta().GetTime(),
 					andromeda.GetMeta().GetPreviousTime(),
@@ -97,8 +95,8 @@ var (
 			},
 
 			// Issue Draw Call
-			SetupOnRenderContext: func(andromeda *Andromeda) {
-				andromeda.EntityManager.GetEntities()["Cube"].Components["Shape"].OnRender();
+			SetupOnRenderContext: func(andromeda *core.Andromeda) {
+				andromeda.EntityManager.GetEntities()["Cube"].Components["Shape"].Render();
 			},
 		},
 	}

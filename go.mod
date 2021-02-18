@@ -11,6 +11,7 @@ require (
 	github.com/go-gl/glfw/v3.3/glfw v0.0.0-20200420212212-258d9bec320e
 	github.com/go-gl/mathgl v0.0.0-20190713194549-592312d8590a
 	github.com/goki/mat32 v1.0.2 // indirect
+	github.com/golang-ui/nuklear v0.0.0-20200321220456-89da3f6a587a // indirect
 	github.com/golang/protobuf v1.4.2 // indirect
 	github.com/imdario/mergo v0.3.9
 	github.com/sqs/goreturns v0.0.0-20181028201513-538ac6014518 // indirect

@@ -11,9 +11,9 @@ import (
 
 // Component Interface
 type Component interface {
-	OnUpdate(window *glfw.Window, time, prevTime, elapsed float64)
-	OnRender()
-	OnStart()
+	Update(window *glfw.Window, time, prevTime, elapsed float64)
+	Render()
+	Ready()
 }
 
 // Entity that holds entities
@@ -30,22 +30,22 @@ func (ent* Entity) SetPosition(pos mgl32.Vec3) {
 	ent.Position = pos;
 }
 
-// OnUpdate method for blah ...
-func (ent *Entity) OnUpdate(window *glfw.Window, time, prevTime, elapsed float64) {
+// Update method for blah ...
+func (ent *Entity) Update(window *glfw.Window, time, prevTime, elapsed float64) {
 	for _, component := range ent.Components {
-		component.OnUpdate(window, time, prevTime, elapsed)
+		component.Update(window, time, prevTime, elapsed)
 	}
 }
 
-func (ent *Entity) OnRender() {
+func (ent *Entity) Render() {
 	for _, component := range ent.Components {
-		component.OnRender()
+		component.Render()
 	}
 }
 
-func (ent *Entity) OnStart() {
+func (ent *Entity) Ready() {
 	for _, component := range ent.Components {
-		component.OnStart()
+		component.Ready()
 	}
 }
 

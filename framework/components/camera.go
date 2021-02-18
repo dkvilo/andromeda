@@ -3,7 +3,7 @@ package components
 import (
 	"fmt"
 
-	"github.com/dkvilo/andromeda/engine/entity"
+	"github.com/dkvilo/andromeda/framework/entity"
 	"github.com/go-gl/glfw/v3.3/glfw"
 	"github.com/go-gl/mathgl/mgl32"
 )
@@ -34,13 +34,8 @@ func (cam *Camera) GetPosition() (mgl32.Mat4) {
 	return cam.position
 }
 
-// OnUpdate method for Sprite ...
-func (cam *Camera) OnUpdate(window *glfw.Window, time, prevTime, elapsed float64) {
+// Update method for Sprite ...
+func (cam *Camera) Update(window *glfw.Window, time, prevTime, elapsed float64) {
 	fmt.Println("Camera: \n - Position:")
 	fmt.Println(cam.position)
 }
-
-// OnStart Override
-func (cam *Camera) OnStart() {}
-// OnRender Override
-func (cam *Camera) OnRender() {}

@@ -1,7 +1,7 @@
 package core
 
 import (
-	"github.com/dkvilo/andromeda/engine/entity"
+	"github.com/dkvilo/andromeda/framework/entity"
 	"github.com/go-gl/glfw/v3.3/glfw"
 )
 

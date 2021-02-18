@@ -1,3 +1,5 @@
+package functions
+
 import "reflect"
 
 // SizeOf any type

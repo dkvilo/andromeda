@@ -27,6 +27,8 @@ github.com/go-resty/resty/v2 v2.1.0 h1:Z6IefCpUMfnvItVJaJXWv/pMiiD11So35QgwEELsl
 github.com/go-resty/resty/v2 v2.1.0/go.mod h1:dZGr0i9PLlaaTD4H/hoZIDjQ+r6xq8mgbRzHZf7f2J8=
 github.com/goki/mat32 v1.0.2 h1:pWwejsySL7TXcuE+axGVhF6I4U9YBK6RCDyYwgPmucA=
 github.com/goki/mat32 v1.0.2/go.mod h1:SCqUsgLhG48i7wu/Kce9OF62abYJnxCX7YL5TOxZ0K4=
+github.com/golang-ui/nuklear v0.0.0-20200321220456-89da3f6a587a h1:4xYcuzxZD7RXiBDHZE4JsNV06F9/e1ZMKOB8TisS6s8=
+github.com/golang-ui/nuklear v0.0.0-20200321220456-89da3f6a587a/go.mod h1:xX2vbAOtImdmMK3nPye2JyxCZbPmbjg/IVBIzuxReKU=
 github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b h1:VKtxabqXZkF25pY9ekfRL6a582T4P37/31XEstQ5p58=
 github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b/go.mod h1:SBH7ygxi8pfUlaOkMMuAQtPIUF8ecWP5IEl/CR7VP2Q=
 github.com/golang/mock v1.1.1/go.mod h1:oTYuIxOrZwtPieC+H1uAHpcLFnEyAGVDL/k47Jfbm0A=

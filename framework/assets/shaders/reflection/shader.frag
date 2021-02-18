@@ -22,6 +22,5 @@ void main() {
 	coord.x += sin((coord.x + speed) * 100) * strength;
 	coord.y += cos((coord.y + speed) * 100) * strength;
 
-	outputColor = texture(tex, coord) * 0.8;
-
+	outputColor = texture(tex, coord) * 0.8; // 1.8
 }

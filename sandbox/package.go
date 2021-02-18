@@ -1,7 +1,7 @@
 package sandbox
 
 import (
-	"github.com/dkvilo/andromeda/engine/core"
+	"github.com/dkvilo/andromeda/framework/core"
 )
 
 // Example structure

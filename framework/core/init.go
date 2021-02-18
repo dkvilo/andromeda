@@ -2,17 +2,13 @@ package core
 
 import (
 	"fmt"
-	"image"
 	"log"
-	"os"
 
-	"github.com/andrebq/gas"
 	"github.com/go-gl/gl/v4.1-core/gl"
 	"github.com/go-gl/glfw/v3.3/glfw"
 )
 
 func (andromeda *Andromeda) init() *Andromeda {
-
 
 	if andromeda.err = glfw.Init(); andromeda.err != nil {
 		log.Fatalf("GLFW Init: %s", andromeda.err)
@@ -32,38 +28,17 @@ func (andromeda *Andromeda) init() *Andromeda {
 		log.Fatalf("GLFW CreateWindow: %s", andromeda.err)
 	}
 
-	andromeda.window.SetDropCallback(func(window *glfw.Window, names []string) {
-		fmt.Println(names)
-		window.SetTitle(names[0])
-	})
-	
 	andromeda.window.MakeContextCurrent()
 	
 	if andromeda.err = gl.Init(); andromeda.err != nil {
 		log.Fatalf("GL Init: %s", andromeda.err)
 	}
-		
+
 	fmt.Println("GL Version:", gl.GoStr(gl.GetString(gl.VERSION)))
 
-	andromeda.running = true
-
-	cursortSrc, err := gas.Abs("github.com/dkvilo/andromeda/resources/assets/ui/cursor.png")
-	if err != nil {
-		panic(err)
-	}
-
-	cursorImgFile, err := os.Open(cursortSrc)
-	if err != nil {
-		panic(fmt.Errorf("Image %v not found on disk", err))
-	}
+	gl.Viewport(0, 0, int32(andromeda.Width), int32(andromeda.Height));
 	
-	img, _, err := image.Decode(cursorImgFile)
-	if err != nil {
-		panic(fmt.Errorf("texture %v not found on disk", err))
-	}
-
-	newCursor := glfw.CreateCursor(img, 0, 0)
-	andromeda.window.SetCursor(newCursor)
+	andromeda.running = true
 
 	return andromeda
 }

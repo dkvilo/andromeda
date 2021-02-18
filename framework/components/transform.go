@@ -3,7 +3,7 @@ package components
 import (
 	"fmt"
 
-	"github.com/dkvilo/andromeda/engine/entity"
+	"github.com/dkvilo/andromeda/framework/entity"
 	"github.com/go-gl/glfw/v3.3/glfw"
 	"github.com/go-gl/mathgl/mgl32"
 )
@@ -22,13 +22,7 @@ func NewTransform(container *entity.Entity) *Transform {
 	}
 }
 
-// OnRender Override
-func (t *Transform) OnRender() {}
-
-// OnStart Override
-func (t *Transform) OnStart() {}
-
-// OnUpdate method for Transform ...
-func (t *Transform) OnUpdate(window *glfw.Window, time, prevTime, elapsed float64) {
+// Update method for Transform ...
+func (t *Transform) Update(window *glfw.Window, time, prevTime, elapsed float64) {
 	fmt.Println("Transform", t.Label, ":\n  - Position:", t.Position, "\n  - Rotation:", t.Rotation)
 }
