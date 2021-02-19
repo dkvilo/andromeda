@@ -75,7 +75,7 @@ var (
 				Cube.AddComponent("Shape", cubeShape)
 				Cube.Ready()
 
-				cubeShape.LoadAndBindTexture("github.com/dkvilo/andromeda/resources/assets/textures/water.png")
+				cubeShape.LoadAndBindTexture("github.com/dkvilo/andromeda/resources/assets/textures/art.png")
 
 				cubeShape.Program.SetProjectionMatrix(
 					mgl32.Perspective(mgl32.DegToRad(62.0),
