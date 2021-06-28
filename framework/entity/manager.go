@@ -18,12 +18,13 @@ func (m *Manager) RegisterEntity(entityName string, ent Entity) Entity {
 			panic(fmt.Errorf("Entity is Already registered in manager %s", key))
 		}
 	}
-	
-	temp = map[string] Entity {
+
+	temp = map[string]Entity{
 		string(entityName): ent,
 	}
 
-	if err := mergo.Merge(&m.Entities, temp); err != nil {}
+	if err := mergo.Merge(&m.Entities, temp); err != nil {
+	}
 	return ent
 }
 
@@ -33,7 +34,7 @@ func (m *Manager) GetEntities() map[string]Entity {
 }
 
 // GetEntity .
-func (m *Manager) GetEntity(entityName string) Entity  {
+func (m *Manager) GetEntity(entityName string) Entity {
 	for key := range m.Entities {
 		if reflect.TypeOf(key) == reflect.TypeOf(entityName) {
 			return m.Entities[entityName]
@@ -41,5 +42,3 @@ func (m *Manager) GetEntity(entityName string) Entity  {
 	}
 	return Entity{}
 }
-
-

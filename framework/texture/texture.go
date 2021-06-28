@@ -10,30 +10,30 @@ import (
 )
 
 // Create Texture
-func Create(file string, slot uint32) (uint32, error) {
+func Create(file string) (uint32, error) {
 
-	fmt.Println("[Texture] Using Texture Slot", gl.TEXTURE0 + slot)
+	fmt.Println("[Texture] Using Texture Slot", gl.TEXTURE0)
 
 	imgFile, err := os.Open(file)
 	if err != nil {
 		return 0, fmt.Errorf("texture %q not found on disk: %v", file, err)
 	}
-	
+
 	img, _, err := image.Decode(imgFile)
 	if err != nil {
 		return 0, err
 	}
 
 	rgba := image.NewRGBA(img.Bounds())
-	if rgba.Stride != rgba.Rect.Size().X * 4 {
+	if rgba.Stride != rgba.Rect.Size().X*4 {
 		return 0, fmt.Errorf("unsupported stride")
 	}
-	
+
 	draw.Draw(rgba, rgba.Bounds(), img, image.Point{0, 0}, draw.Src)
 
 	var texture uint32
 	gl.GenTextures(1, &texture)
-	gl.ActiveTexture(gl.TEXTURE0 + slot)
+	gl.ActiveTexture(gl.TEXTURE0)
 	gl.BindTexture(gl.TEXTURE_2D, texture)
 	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
 	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
@@ -41,7 +41,7 @@ func Create(file string, slot uint32) (uint32, error) {
 	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE)
 
 	gl.TexImage2D(
-		gl.TEXTURE_2D, 
+		gl.TEXTURE_2D,
 		0, gl.RGBA,
 		int32(rgba.Rect.Size().X),
 		int32(rgba.Rect.Size().Y),
@@ -53,5 +53,3 @@ func Create(file string, slot uint32) (uint32, error) {
 
 	return texture, nil
 }
-
-

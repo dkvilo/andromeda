@@ -19,25 +19,23 @@ func (andromeda *Andromeda) init() *Andromeda {
 	glfw.WindowHint(glfw.ContextVersionMinor, 1)
 	glfw.WindowHint(glfw.OpenGLProfile, glfw.OpenGLCoreProfile)
 	glfw.WindowHint(glfw.OpenGLForwardCompatible, glfw.True)
-	
+
 	if andromeda.Frameless {
-		glfw.WindowHint(glfw.Decorated, glfw.False) 
+		glfw.WindowHint(glfw.Decorated, glfw.False)
 	}
 
-	if andromeda.window, andromeda.err = glfw.CreateWindow(int(andromeda.Width), int(andromeda.Height), andromeda.Title, nil, nil); andromeda.err !=  nil {
+	if andromeda.window, andromeda.err = glfw.CreateWindow(int(andromeda.Width), int(andromeda.Height), andromeda.Title, nil, nil); andromeda.err != nil {
 		log.Fatalf("GLFW CreateWindow: %s", andromeda.err)
 	}
 
 	andromeda.window.MakeContextCurrent()
-	
+
 	if andromeda.err = gl.Init(); andromeda.err != nil {
 		log.Fatalf("GL Init: %s", andromeda.err)
 	}
 
 	fmt.Println("GL Version:", gl.GoStr(gl.GetString(gl.VERSION)))
 
-	gl.Viewport(0, 0, int32(andromeda.Width), int32(andromeda.Height));
-	
 	andromeda.running = true
 
 	return andromeda

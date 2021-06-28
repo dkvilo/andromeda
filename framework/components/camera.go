@@ -4,25 +4,24 @@ import (
 	"fmt"
 
 	"github.com/dkvilo/andromeda/framework/entity"
-	"github.com/go-gl/glfw/v3.3/glfw"
 	"github.com/go-gl/mathgl/mgl32"
 )
 
 // Camera struct definition
 type Camera struct {
 	Container *entity.Entity
-	position mgl32.Mat4
+	position  mgl32.Mat4
 }
 
 // NewCamera constructor
 func NewCamera(container *entity.Entity) *Camera {
-	return &Camera {
+	return &Camera{
 		Container: container,
 	}
 }
 
 // LookAt Default Position
-func (cam *Camera) LookAt(eye, center, up mgl32.Vec3) (*Camera) {
+func (cam *Camera) LookAt(eye, center, up mgl32.Vec3) *Camera {
 	// centered position
 	// mgl32.Vec3{2, 2, 2}, mgl32.Vec3{0, 0, 0}, mgl32.Vec3{0, 1, 0}
 	cam.position = mgl32.LookAtV(eye, center, up)
@@ -30,12 +29,12 @@ func (cam *Camera) LookAt(eye, center, up mgl32.Vec3) (*Camera) {
 }
 
 // GetPosition Access camera position in world
-func (cam *Camera) GetPosition() (mgl32.Mat4) {
+func (cam *Camera) GetPosition() mgl32.Mat4 {
 	return cam.position
 }
 
 // Update method for Sprite ...
-func (cam *Camera) Update(window *glfw.Window, time, prevTime, elapsed float64) {
+func (cam *Camera) Update(time, elapsed float64) {
 	fmt.Println("Camera: \n - Position:")
 	fmt.Println(cam.position)
 }

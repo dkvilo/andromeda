@@ -34,4 +34,3 @@ func (v *VertexBuffer) Bind() {
 func (v *VertexBuffer) Unbind() {
 	gl.BindBuffer(gl.ARRAY_BUFFER, 0)
 }
-

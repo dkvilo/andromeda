@@ -13,4 +13,3 @@ type Example struct {
 func (e *Example) Run() {
 	e.Run()
 }
-

@@ -33,4 +33,3 @@ func (v *VertexArray) Bind() {
 func (v *VertexArray) Unbind() {
 	gl.BindVertexArray(0)
 }
-

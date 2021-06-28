@@ -12,8 +12,7 @@ func (andromeda *Andromeda) Run() *Andromeda {
 	defer func() {
 		andromeda.window.Destroy()
 		glfw.Terminate()
-	} ()
+	}()
 
 	return andromeda
 }
-

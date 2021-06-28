@@ -7,23 +7,20 @@ import (
 func (andromeda *Andromeda) engineLoop() {
 
 	// Issue Load Context
-	andromeda.SetupOnLoadContext(andromeda);
+	andromeda.OnLoadContext(andromeda)
 
 	// Engine Loop
 	for !andromeda.window.ShouldClose() {
-		
+
 		// Update Engine Meta information
 		andromeda.updateMetaOnRender()
 
 		// Extend Master Renderer Behaviour
 		andromeda.masterRenderer()
-		
+
 		// Load Update Context
-		andromeda.SetupOnUpdateContext(andromeda)
-		
-		// Load Render Context
-		andromeda.SetupOnRenderContext(andromeda)
-		
+		andromeda.OnUpdateContext(andromeda)
+
 		if andromeda.window.GetKey(glfw.KeyQ) == 1 {
 			break
 		}

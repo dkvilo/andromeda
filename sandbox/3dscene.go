@@ -29,7 +29,7 @@ var (
 			Title:  "Andromeda 3d Sandbox",
 
 			// Issue OnLoad
-			SetupOnLoadContext: func(andromeda *core.Andromeda) {
+			OnLoadContext: func(andromeda *core.Andromeda) {
 
 				vertexShaderSrc, err := gas.Abs("github.com/dkvilo/andromeda/framework/assets/shaders/reflection/shader.vert")
 				if err != nil {
@@ -61,43 +61,43 @@ var (
 					Position: mgl32.Vec3{3, 3, 3},
 				}
 
-				cubeShape := components.NewShape(&Cube)
-				cubeShape.RawShape = object.Load(objectSrc)
-
 				shaderProgram := shader.Program{}
 				program, err := shaderProgram.CreateProgram(string(vertexShaderData)+"\x00", string(fragmentShaderData)+"\x00")
 				if err != nil {
 					log.Fatalln("error while compile", err)
 				}
 
-				cubeShape.Program = &program
+				cubeRenderer := components.NewRenderer(&Cube, object.Load(objectSrc), &program)
+				cubeRenderer.LoadAndBindTexture("github.com/dkvilo/andromeda/resources/assets/textures/art.png")
 
-				Cube.AddComponent("Shape", cubeShape)
-				Cube.Ready()
+				Cube.AddComponent("Renderer", cubeRenderer)
 
-				cubeShape.LoadAndBindTexture("github.com/dkvilo/andromeda/resources/assets/textures/art.png")
-
-				cubeShape.Program.SetProjectionMatrix(
-					mgl32.Perspective(mgl32.DegToRad(62.0),
+				/**
+				 * Update Projection Matrix
+				 */
+				cubeRenderer.Program.SetProjectionMatrix(
+					mgl32.Perspective(mgl32.DegToRad(45.0),
 						andromeda.Width/andromeda.Height, 0.001, 1000.0),
 				)
-				
+
 				andromeda.EntityManager.RegisterEntity("Cube", Cube)
 			},
 
 			// Issue Entity Update
-			SetupOnUpdateContext: func(andromeda *core.Andromeda) {
-				andromeda.EntityManager.GetEntities()["Cube"].Components["Shape"].Update(
-					andromeda.GetWindow(),
-					andromeda.GetMeta().GetTime(),
-					andromeda.GetMeta().GetPreviousTime(),
-					andromeda.GetMeta().GetElapsed(),
-				)
-			},
+			OnUpdateContext: func(andromeda *core.Andromeda) {
+				/**
+				 * Update and render all Entity in the manager
+				 * `Renderer` component
+				 */
+				for _, element := range andromeda.EntityManager.Entities {
 
-			// Issue Draw Call
-			SetupOnRenderContext: func(andromeda *core.Andromeda) {
-				andromeda.EntityManager.GetEntities()["Cube"].Components["Shape"].Render()
+					element.Components["Renderer"].Update(
+						andromeda.GetMeta().GetTime(),
+						andromeda.GetMeta().GetElapsed(),
+					)
+					element.Components["Renderer"].Render()
+				}
+
 			},
 		},
 	}

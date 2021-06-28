@@ -15,9 +15,9 @@ type AndromedaObject struct {
 
 // Load and Parse Object
 func Load(path string) []float32 {
-	
+
 	var vertexIndices []float32
-	
+
 	file, err := os.Open(path)
 	if err != nil {
 		panic(fmt.Errorf("Object %q not found on disk: %v", path, err))
@@ -27,7 +27,7 @@ func Load(path string) []float32 {
 
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		if string(scanner.Text()[0]) == "a"{
+		if string(scanner.Text()[0]) == "a" {
 			x, _ := strconv.ParseFloat(strings.Split(scanner.Text(), " ")[1], 64)
 			y, _ := strconv.ParseFloat(strings.Split(scanner.Text(), " ")[2], 64)
 			z, _ := strconv.ParseFloat(strings.Split(scanner.Text(), " ")[3], 64)
@@ -38,5 +38,3 @@ func Load(path string) []float32 {
 	}
 	return vertexIndices
 }
-
-

@@ -10,7 +10,7 @@ import (
 // Compile shader
 func Compile(source string, shaderType uint32) (uint32, error) {
 	shader := gl.CreateShader(shaderType)
-	
+
 	cSources, free := gl.Strs(source)
 	gl.ShaderSource(shader, 1, cSources, nil)
 
@@ -19,7 +19,7 @@ func Compile(source string, shaderType uint32) (uint32, error) {
 
 	var status int32
 	gl.GetShaderiv(shader, gl.COMPILE_STATUS, &status)
-	
+
 	if status == gl.FALSE {
 		var logLength int32
 		gl.GetShaderiv(shader, gl.INFO_LOG_LENGTH, &logLength)
